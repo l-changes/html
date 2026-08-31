@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>10以内加减法与分合练习</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 40px auto;
+      max-width: 900px;
+      background-color: #f0f8ff;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4a90e2;
+    }
+
+    h2 {
+      color: #f39c12;
+      border-bottom: 2px dashed #f39c12;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .section {
+      background-color: #fff;
+      padding: 30px;
+      margin-bottom: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 加减法样式 */
+    .math-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 35px 10px;
+      font-size: 26px;
+    }
+
+    .math-problem {
+      text-align: left;
+      padding-left: 10px;
+    }
+
+    /* 分合式展示样式 */
+    .fenhe-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 30px 10px;
+      justify-items: center;
+    }
+
+    /* 相邻数样式 */
+    .adjacent-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px 10px;
+      font-size: 26px;
+      justify-items: center;
+    }
+
+    .adj-problem {
+      font-family: Arial, sans-serif;
+    }
+
+    /* 按钮区域 */
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .btn-print {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-print:hover {
+      background-color: #45a049;
+    }
+
+    .btn-regen {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .btn-regen:hover {
+      background-color: #0b7dda;
+    }
+
+    /* 打印专用样式 */
+    @media print {
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+
+      body {
+        margin: 0;
+        background-color: #fff;
+        max-width: none;
+      }
+
+      h2 {
+        margin: 0 0 15px 0;
+        padding-bottom: 8px;
+        font-size: 18px;
+      }
+
+      .section {
+        box-shadow: none;
+        padding: 0;
+        margin-bottom: 15px;
+        page-break-inside: avoid;
+      }
+
+      .actions {
+        display: none;
+      }
+
+      h1 {
+        display: none;
+      }
+
+      .math-grid {
+        gap: 8px 10px;
+        font-size: 18px;
+      }
+
+      .fenhe-grid {
+        gap: 5px 10px;
+      }
+
+      .adjacent-grid {
+        gap: 8px 10px;
+        font-size: 18px;
+      }
+
+      svg {
+        width: 65px;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>📝 幼儿园 / 一年级数学练习题</h1>
+
+  <div class="actions">
+    <button class="btn-regen" onclick="generateAll()">🔄 换一批题目</button>
+    <button class="btn-print" onclick="window.print()">🖨️ 打印练习卷</button>
+  </div>
+
+  <div class="section">
+    <h2>🧩 第一部分：10以内的加减法 (30道)</h2>
+    <div class="math-grid" id="math-container"></div>
+  </div>
+
+  <div class="section">
+    <h2>🔗 第二部分：10以内的分合练习 (30道)</h2>
+    <div class="fenhe-grid" id="fenhe-container"></div>
+  </div>
+
+  <div class="section">
+    <h2>📏 第三部分：10以内的相邻数 (20道)</h2>
+    <div class="adjacent-grid" id="adjacent-container"></div>
+  </div>
+
+  <script>
+    // 生成指定范围内的随机整数 [min, max]
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // 生成30道加减法题目
+    function generateMath() {
+      let container = document.getElementById('math-container');
+      container.innerHTML = '';
+      for (let i = 0; i < 30; i++) {
+        let isAdd = Math.random() > 0.5;
+        let a, b, eq;
+        if (isAdd) {
+          a = randInt(1, 9);
+          b = randInt(1, 10 - a); // 保证和不超过10，且不含0
+          eq = `${a} + ${b} = `;
+        } else {
+          a = randInt(2, 10);
+          b = randInt(1, a - 1);   // 保证差不为0或负数，且不含0
+          eq = `${a} - ${b} = `;
+        }
+        let div = document.createElement('div');
+        div.className = 'math-problem';
+        div.innerText = eq;
+        container.appendChild(div);
+      }
+    }
+
+    // 生成30道分合题目（方框连线）
+    function generateFenhe() {
+      let container = document.getElementById('fenhe-container');
+      container.innerHTML = '';
+      for (let i = 0; i < 30; i++) {
+        let n = randInt(2, 10);      // 总和
+        let a = randInt(1, n - 1);   // 左分支
+        let b = n - a;               // 右分支
+
+        // 随机省略一个位置 (0: 顶部总和, 1: 左分支, 2: 右分支)
+        let omit = randInt(0, 2);
+        let strN = omit === 0 ? '' : n;
+        let strA = omit === 1 ? '' : a;
+        let strB = omit === 2 ? '' : b;
+
+        // 使用SVG绘制连线和方框
+        let svg = `
+        <svg width="110" height="130" viewBox="0 0 110 130">
+          <!-- 顶部方框 -->
+          <rect x="35" y="10" width="40" height="35" fill="transparent" stroke="#333" stroke-width="2" rx="4"/>
+          <text x="55" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="#333">${strN}</text>
+          
+          <!-- 左斜线 -->
+          <line x1="55" y1="45" x2="30" y2="80" stroke="#333" stroke-width="2"/>
+          <!-- 右斜线 -->
+          <line x1="55" y1="45" x2="80" y2="80" stroke="#333" stroke-width="2"/>
+          
+          <!-- 左下角方框 -->
+          <rect x="10" y="80" width="40" height="35" fill="transparent" stroke="#333" stroke-width="2" rx="4"/>
+          <text x="30" y="105" text-anchor="middle" font-size="22" font-weight="bold" fill="#333">${strA}</text>
+          
+          <!-- 右下角方框 -->
+          <rect x="60" y="80" width="40" height="35" fill="transparent" stroke="#333" stroke-width="2" rx="4"/>
+          <text x="80" y="105" text-anchor="middle" font-size="22" font-weight="bold" fill="#333">${strB}</text>
+        </svg>`;
+
+        let div = document.createElement('div');
+        div.innerHTML = svg.trim();
+        container.appendChild(div.firstChild);
+      }
+    }
+
+    // 生成20道相邻数题目
+    function generateAdjacent() {
+      let container = document.getElementById('adjacent-container');
+      container.innerHTML = '';
+      for (let i = 0; i < 20; i++) {
+        let n = randInt(1, 9);
+        let left = n - 1;
+        let right = n + 1;
+
+        let pattern = randInt(0, 2);
+        let strL = left;
+        let strN = n;
+        let strR = right;
+
+        let blank = '(&nbsp;&nbsp;&nbsp;)';
+        if (pattern === 0) {
+          strL = blank;
+          strR = blank;
+        } else if (pattern === 1) {
+          strN = blank;
+          strR = blank;
+        } else if (pattern === 2) {
+          strL = blank;
+          strN = blank;
+        }
+
+        let div = document.createElement('div');
+        div.className = 'adj-problem';
+        div.innerHTML = `${strL} &nbsp; ${strN} &nbsp; ${strR}`;
+        container.appendChild(div);
+      }
+    }
+
+    // 生成所有练习题
+    function generateAll() {
+      generateMath();
+      generateFenhe();
+      generateAdjacent();
+    }
+
+    // 页面加载完成时即触发生成
+    window.onload = generateAll;
+  </script>
+</body>
+
+</html>

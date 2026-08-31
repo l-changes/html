@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>混合运算练习题</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 40px auto;
+      max-width: 900px;
+      background-color: #f0f8ff;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4a90e2;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .btn-print {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-print:hover {
+      background-color: #45a049;
+    }
+
+    .btn-regen {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .btn-regen:hover {
+      background-color: #0b7dda;
+    }
+
+    .section {
+      background-color: #fff;
+      padding: 30px;
+      margin-bottom: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #f39c12;
+      border-bottom: 2px dashed #f39c12;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .math-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px 10px;
+      font-size: 24px;
+      justify-items: start;
+      padding-left: 20px;
+    }
+
+    .math-problem {
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    /* 打印专用样式 */
+    @media print {
+      @page {
+        size: A4;
+        margin: 15mm;
+      }
+
+      body {
+        margin: 0;
+        background-color: #fff;
+        max-width: none;
+      }
+
+      .section {
+        box-shadow: none;
+        padding: 0;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        margin: 0 0 15px 0;
+        padding-bottom: 8px;
+        font-size: 18px;
+      }
+
+      .actions {
+        display: none;
+      }
+
+      h1 {
+        display: none;
+      }
+
+      .math-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px 5px;
+        font-size: 18px;
+        padding-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>📝 混合运算练习题 (80道)</h1>
+
+  <div class="actions">
+    <button class="btn-regen" onclick="generateAll()">🔄 换一批题目</button>
+    <button class="btn-print" onclick="window.print()">🖨️ 打印练习卷</button>
+  </div>
+
+  <div class="section">
+    <h2>🧩 第一部分 (40道)</h2>
+    <div class="math-grid" id="math-container-1"></div>
+  </div>
+
+  <div class="section">
+    <h2>🧩 第二部分 (40道)</h2>
+    <div class="math-grid" id="math-container-2"></div>
+  </div>
+
+  <script>
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateAll() {
+      let container1 = document.getElementById('math-container-1');
+      let container2 = document.getElementById('math-container-2');
+      container1.innerHTML = '';
+      container2.innerHTML = '';
+
+      let problems = [];
+
+      // 1. 乘法 + 2位数 (16道)
+      for (let i = 0; i < 16; i++) {
+        let a = randInt(2, 9);
+        let b = randInt(2, 9);
+        let c = randInt(10, 99);
+        problems.push(`${a} × ${b} + ${c} =`);
+      }
+
+      // 2. 乘法 - 2位数 (16道)
+      for (let i = 0; i < 16; i++) {
+        let a, b, prod;
+        do {
+          a = randInt(2, 9);
+          b = randInt(2, 9);
+          prod = a * b;
+        } while (prod <= 10);
+        let c = randInt(10, prod - 1);
+        problems.push(`${a} × ${b} - ${c} =`);
+      }
+
+      // 3. 除法 + 2位数 (16道)
+      for (let i = 0; i < 16; i++) {
+        let b = randInt(2, 9);
+        let q = randInt(2, 9);
+        let a = q * b;
+        let c = randInt(10, 99);
+        problems.push(`${a} ÷ ${b} + ${c} =`);
+      }
+
+      // 4. 2位数 - 除法 (16道)
+      for (let i = 0; i < 16; i++) {
+        let b = randInt(2, 9);
+        let q = randInt(2, 9);
+        let a = q * b;
+        let c = randInt(10, 99);
+        problems.push(`${c} - ${a} ÷ ${b} =`);
+      }
+
+      // 5. 2位数的加减混合运算 (16道)
+      for (let i = 0; i < 16; i++) {
+        let isPlusFirst = Math.random() > 0.5;
+        if (isPlusFirst) {
+          let A = randInt(10, 99);
+          let B = randInt(10, 99);
+          let C = randInt(10, A + B - 1);
+          if (C > 99) C = randInt(10, 99);
+          problems.push(`${A} + ${B} - ${C} =`);
+        } else {
+          let B = randInt(10, 89);
+          let A = randInt(B + 1, 99);
+          let C = randInt(10, 99);
+          problems.push(`${A} - ${B} + ${C} =`);
+        }
+      }
+
+      for (let i = problems.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [problems[i], problems[j]] = [problems[j], problems[i]];
+      }
+
+      for (let i = 0; i < 40; i++) {
+        let div = document.createElement('div');
+        div.className = 'math-problem';
+        div.innerText = problems[i];
+        container1.appendChild(div);
+      }
+
+      for (let i = 40; i < 80; i++) {
+        let div = document.createElement('div');
+        div.className = 'math-problem';
+        div.innerText = problems[i];
+        container2.appendChild(div);
+      }
+    }
+
+    // 页面加载完成即生成
+    window.onload = generateAll;
+  </script>
+</body>
+
+</html>
